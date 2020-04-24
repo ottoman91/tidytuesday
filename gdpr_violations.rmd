@@ -1,0 +1,73 @@
+---
+title: "Tidy Tuesday - GDPR Violations"
+author: "Usman Khaliq"
+date: "`r Sys.Date()`"
+output: 
+  github_document:
+    toc: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r message=FALSE, warning=FALSE}
+# Libraries
+library(tidyverse)
+library(readr)
+# Parameters
+
+#URLs for downloading the data
+gdpr_tsv_url <- "https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-04-21/gdpr_violations.tsv"
+
+gdpr_txt_url <- "https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-04-21/gdpr_text.tsv" 
+
+#Load the data
+gdpr_violations <- 
+  gdpr_tsv_url %>%
+  read_tsv()
+  
+gdpr_text <- 
+  gdpr_txt_url %>% 
+  read_tsv()
+#===============================================================================
+
+```
+
+## 1d Exploratory Data Analysis of the Datasets
+
+First, let us examine the `gdpr_violations` and `gdpr_text` tibbles. 
+
+```{r}
+gdpr_violations %>% 
+  glimpse()
+```
+
+```{r}
+gdpr_text %>% 
+  glimpse()
+```
+
+Lets create a column bar to see which countries had the highest number of GDPR violations
+
+```{r}
+gdpr_violations %>% 
+  count(name) %>% 
+  arrange(desc(n)) %>% 
+  mutate(name = fct_reorder(name, n)) %>% 
+  ggplot(aes(name, n)) +
+  geom_col() +
+  coord_flip() +
+  labs(
+    title = "Number of GDPR Violations Reported by Each Country in Europe",
+    x = "Country",
+    y = "Number of GDPR Violations",
+    caption = "Source: PrivacyAffairs.com"
+  )
+```
+
+
+### Subsection
+
+## Section 2
+
