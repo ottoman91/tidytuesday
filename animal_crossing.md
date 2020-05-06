@@ -149,7 +149,7 @@ user_reviews %>%
   ggplot(aes(grade, n)) +
   geom_col() +
   labs(
-    title = "How Did Users? Rate Animal Crossing?",
+    title = "How Did Users Rate Animal Crossing?",
     subtitle = "Surprisingly the majority of Users Gave it a 0!",
     x = "User Rating (Out of 100)",
     y = "Number of Users",
