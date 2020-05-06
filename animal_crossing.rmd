@@ -1,0 +1,120 @@
+---
+title: "TidyTuesday - Animal Crossing"
+author: "Usman Khaliq"
+date: "`r Sys.Date()`"
+output: 
+  github_document:
+    toc: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r message=FALSE, warning=FALSE}
+# Libraries
+library(tidyverse)
+library(readr)
+
+# Parameters
+
+#url for critic data
+url_critic <- "https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-05-05/critic.tsv"
+
+#url for user reviews
+url_user_reviews <- "https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-05-05/user_reviews.tsv"
+
+#url for items 
+url_items <- "https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-05-05/items.csv"
+
+#url for villagers
+url_villagers <- "https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-05-05/villagers.csv"
+
+#===============================================================================
+
+# Code 
+
+#load the data
+
+critic <- 
+  url_critic %>% 
+  read_tsv()
+
+user_reviews <-
+  url_user_reviews %>% 
+  read_tsv()
+
+items <-
+  url_items %>% 
+  read_tsv()
+
+villagers <-
+  url_villagers %>% 
+  read_tsv()
+
+```
+
+## Start!
+
+I haven't bought Animal Crossing on my Switch yet; I have discovered a newfound addiction for the Legend of Zelda: Breadth of the Wild, and have vowed to finally complete it this year. However, I am happy to dig into this TidyTuesday dataset, and explore this dataset from two angles right now:
+
+* Trends in User Reviews and Critic Reviews
+* Sentiment analysis on user's opinions about the game, and exploring whether there are any general differences in how users and critics are reviewing the game.
+
+## Explore the data
+
+First, lets explore the animal crossing dataset
+
+```{r}
+glimpse(critic)
+summary(critic)
+```
+
+```{r} 
+glimpse(user_reviews)
+summary(user_reviews)
+```
+
+## Is Animal Crossing the New Darling of the Quarantined Critics? 
+
+Lets see if critics unanimously love Animal Crossing
+
+```{r} 
+
+critic %>%
+  count(grade) %>% 
+  arrange(desc(n)) %>% 
+  mutate(grade = fct_reorder(factor(grade), n, .desc = TRUE)) %>% 
+  ggplot(aes(grade, n)) +
+  geom_col() +
+  labs(
+    title = "How Did Critics Rate Animal Crossing?",
+    subtitle = "Animal Crossing is one of the highest rated Games of the Pandemic Year so far",
+    x = "Critic Rating (Out of 100)",
+    y = "Number of Critics",
+    caption = "Source: VillagerDB and MetaCritic, courtesy TidyTuesday"
+  )
+```
+
+## Do Fans Also Love Animal Crossing With the Same Dedication?
+
+Lets see if fans also are as gagga over the game as the critics are.
+
+```{r}
+user_reviews %>%
+  count(grade) %>% 
+  arrange(desc(n)) %>% 
+  mutate(grade = fct_reorder(factor(grade), n, .desc = TRUE)) %>% 
+  ggplot(aes(grade, n)) +
+  geom_col() +
+  labs(
+    title = "How Did Users? Rate Animal Crossing?",
+    subtitle = "Surprisingly the majority of Users Gave it a 0!",
+    x = "User Rating (Out of 100)",
+    y = "Number of Users",
+    caption = "Source: VillagerDB and MetaCritic, courtesy TidyTuesday"
+  )
+
+```
+
+

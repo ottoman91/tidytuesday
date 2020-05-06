@@ -66,6 +66,7 @@ gdpr_violations %>%
   )
 ```
 
+From the above, we can see that Spain, Germany and Romania have reported the most number of GDPR violations, i.e. more than 20. All the other countries have reported less than 20 GDPR violations. 
 
 ### Subsection
 
